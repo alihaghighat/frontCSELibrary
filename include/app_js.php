@@ -1,0 +1,1 @@
+<script src="assestPanel/dist/js/app.js"></script>
