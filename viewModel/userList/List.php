@@ -1,7 +1,7 @@
 <?php
 include_once("../../functions/config.php");
 if(isset($_REQUEST['keyword']) and isset($_REQUEST['limit']) and isset($_REQUEST['page'])){
-    $url = "https://omid.asqtest.ir/manager/categoryList";
+    $url = "https://omid.asqtest.ir/manager/userList";
     $data=array(
         "token"=>$_SESSION['employeeId'],
         "keyword"=>$_REQUEST['keyword'],
@@ -68,8 +68,11 @@ if(isset($_REQUEST['keyword']) and isset($_REQUEST['limit']) and isset($_REQUEST
     echo '<thead>
                 <tr>
                     <th class="border-b-2 dark:border-dark-5 whitespace-nowrap">#</th>
-                    <th class="border-b-2 dark:border-dark-5 whitespace-nowrap">نام</th>
-                    <th class="border-b-2 dark:border-dark-5 whitespace-nowrap">نام ریشه</th>
+                    <th class="border-b-2 dark:border-dark-5 whitespace-nowrap">نام و نام خانوادگی</th>
+                    <th class="border-b-2 dark:border-dark-5 whitespace-nowrap">شماره دانشجویی</th>
+                    <th class="border-b-2 dark:border-dark-5 whitespace-nowrap">شماره همراه</th>
+                    <th class="border-b-2 dark:border-dark-5 whitespace-nowrap">مقطع تحصیلی</th>
+                    <th class="border-b-2 dark:border-dark-5 whitespace-nowrap">وضعیت</th>
                    
           
                     <th class="border-b-2 dark:border-dark-5 whitespace-nowrap"> عملیات</th>
@@ -80,36 +83,36 @@ if(isset($_REQUEST['keyword']) and isset($_REQUEST['limit']) and isset($_REQUEST
 
     foreach ($datas as $data){
         $j++;
+        $btn='';
+        if($data['status']=='active'){
+            $btn='<button class="btn btn-danger-soft" onclick="deActive('.$data['id'].')">غیرفعال</button>          ';
+            $status='فعال';
+        }
+
+        if($data['status']=='notActive'){
+            $btn='<button class="btn btn-success-soft" onclick="Active('.$data['id'].')">فعال سازی</button>          ';
+            $status='غیر فعال';
+        }
 
 
         echo '
          <tr>
                     <td class="border-b whitespace-nowrap">'.$j.'</td>
-                    <td class="border-b whitespace-nowrap">'.$data['name'].'  </td>
+                    <td class="border-b whitespace-nowrap">'.$data['name'].'  '.$data['lastName'].' </td>
               
-                    <td class="border-b whitespace-nowrap">رشه اصلی</td>
+                    <td class="border-b whitespace-nowrap">'.$data['sNumber'].'</td>
+                    <td class="border-b whitespace-nowrap ">'.$data['phone'].' </td>
+                    <td class="border-b whitespace-nowrap ">'.$data['grade'].' </td>
+                    <td class="border-b whitespace-nowrap ">'.$status.' </td>
                     <td class="border-b whitespace-nowrap">
-                    <a target="_blank" href="dashboard/editeCategory/'.$data['id'].'" class=" m-1 p-1  rounded-lg btn-warning">ویرایش</a>
-                    <button class="btn btn-danger-soft" onclick="deActive('.$data['id'].')">حذف</button>          
+                    <a target="_blank" href="dashboard/editeUser/'.$data['id'].'" class=" m-1 p-1  rounded-lg btn-warning">ویرایش</a>
+                    <a target="_blank" href="dashboard/historyBookUser/'.$data['id'].'" class=" m-1 p-1  rounded-lg btn-elevated-primary">سوابق امانت</a>
+                    
+                    '.$btn .'
                     </td>
                 
         </tr>
         ';
-        foreach ($data['subcategory'] as $subcategory ){
-            echo '
-         <tr>
-                    <td class="border-b whitespace-nowrap">'.$j.'</td>
-                    <td class="border-b whitespace-nowrap">'.$subcategory['name'].'  </td>
-              
-                    <td class="border-b whitespace-nowrap">'.$data['name'].' </td>
-                    <td class="border-b whitespace-nowrap">
-                    <a target="_blank" href="dashboard/editeCategory/'.$subcategory['id'].'" class=" m-1 p-1  rounded-lg btn-warning">ویرایش</a>
-                    <button class="btn btn-danger-soft" onclick="deActive('.$subcategory['id'].')">حذف</button>          
-                    </td>
-                
-        </tr>
-        ';
-        }
     }
 
 

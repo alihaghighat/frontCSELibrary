@@ -159,58 +159,42 @@ if(is_file($file)){
             ";
 
         }
-        if($page=='visitList'){
+        if($page=='categoryList'){
             echo "
            
            setTimeout(function () {
 
-        patientlist()
+        categoryList()
     },500) ;
      setTimeout(function () {
 
-        patientlist();
+        categoryList();
     },2500) 
             ";
 
-        }if($page=='addOnlineBooking'){
-            echo "
+        }if($page=='bookList'){
+        echo "
            
            setTimeout(function () {
 
-        showeTime();
-        var row = document.getElementsByClassName('today selected');
-        for (var i=0;i<row.length; i++) {
-            row[i].click();
-        }
+        bookList()
     },500) ;
      setTimeout(function () {
 
-        showeTime();
-        var row = document.getElementsByClassName('today selected');
-        for (var i=0;i<row.length; i++) {
-            row[i].click();
-        }
+        bookList();
     },2500) 
             ";
 
-        }if($page=='listOnlineBooking'){
-            echo "
+        }if($page=='userList'){
+        echo "
            
            setTimeout(function () {
 
-       
-        var row = document.getElementsByClassName('today selected');
-        for (var i=0;i<row.length; i++) {
-            row[i].click();
-        }
+        userList()
     },500) ;
      setTimeout(function () {
 
-       
-        var row = document.getElementsByClassName('today selected');
-        for (var i=0;i<row.length; i++) {
-            row[i].click();
-        }
+        userList();
     },2500) 
             ";
 
@@ -351,115 +335,7 @@ showPading()
         }
     ?>
     let url=""
-    async function addDoctor(){
-        $('#alert-danger').hide(500);
-        let name=$('#name').val();
-        let lastName=$('#lastName').val();
-        let phone=fixNumbers($('#phone').val());
-        let expertise=$('#expertise :selected').val();
-        let decExpertise=$('#decExpertise').val();
-        let idCode=$('#idCode').val();
-        let Percent=fixNumbers($('#Percent').val());
-        let price=fixNumbers($('#price').val());
-        let urlImage=url;
 
-        let error=[];
-        if(name=='' && name.length<3){
-            error.push("نام را به درستی وارد کنید.");
-        }
-        if(lastName=='' && lastName.length<3){
-            error.push("نام خانوادگی را به درستی وارد کنید.");
-        }
-        if(phone=='' && phone.length<11){
-            error.push("شماره را به درستی وارد کنید.");
-        }
-        if(idCode=='' && idCode.length<5){
-            error.push("کد معرف را به درستی وارد کنید.");
-        }
-        if(Percent<0){
-            error.push("درصد کمتر ازصفر نمی شود..");
-        }
-        if(price<0){
-            error.push("مبلغ کمتر ازصفر نمی شود.");
-        }
-        if(url=='' ){
-            error.push("خطای آپلود تصویر");
-        }
-
-
-
-        if(error.length==0){
-
-            let data = {
-
-                "name": name,
-                "token":"<?php echo $_SESSION['employeeId'] ?>",
-                "lastName":lastName,
-                "phone":phone,
-                "expertise":expertise,
-                "decExpertise": decExpertise,
-                "picUrl":urlImage,
-                "idCode":idCode,
-                "price":price,
-                "Percent":Percent
-
-            }
-
-            const response = await fetch('https://api.asqtest.ir/doctor/addDoctor', {
-                method: "POST",
-                body: JSON.stringify(data),
-                headers: {"Content-type": "application/json; charset=UTF-8"}
-            });
-
-            console.log(response);
-            if(response.ok){
-
-                var dataAPI = await response.json();
-                console.log(dataAPI);
-                $('#alert-danger').hide(400);
-                if(dataAPI['status']==200){
-                    $('#loding').hide(400);
-
-                    $('#alert-success').show(500);
-                    $('#alert-success').html(dataAPI['description']);
-                    setTimeout(function () {
-                        $('#alert-success').hide(400);
-                        location.reload();
-                    },10000);
-
-
-                }else{
-                    $('#loding').hide(400);
-                    $('#alert-danger').show(500);
-                    $('#alert-danger').html(dataAPI['description']);
-                    setTimeout(function () {
-                        $('#alert-danger').hide(400);
-                    },10000);
-
-                }
-            }else{
-                $('#loding').hide(400);
-                $('#alert-danger').show(500);
-                $('#alert-danger').html('لطفا صفحه کلید خود را در حالت EN قرار دهید.');
-
-                setTimeout(function () {
-                    $('#alert-danger').hide(400);
-                },10000);
-
-            }
-        }else{
-
-            console.log(error);
-            let text = error.join("<br><br>");
-            $('#loding').hide(400);
-            $('#alert-danger').show(500);
-            $('#alert-danger').html(text);
-
-            setTimeout(function () {
-                $('#alert-danger').hide(400);
-            },50000);
-        }
-    }
     async function editeDoctor(id){
         $('#alert-danger').hide(500);
         let name=$('#name').val();

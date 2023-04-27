@@ -198,7 +198,34 @@
 <div class="content">
     <div class="intro-y flex items-center mt-8">
         <h2 class="text-lg font-medium ml-auto">
-          افزودن دسته بندی
+          ویرایش  کاربر
+            <?php
+            $url = "https://omid.asqtest.ir/manager/userDetaile";
+            $data=array(
+                "token"=>$_SESSION['employeeId'],
+                "id"=>$_REQUEST['id']
+            )
+            ;
+
+
+            $postdata = json_encode($data);
+
+            $ch = curl_init($url);
+            curl_setopt($ch, CURLOPT_POST, 1);
+            curl_setopt($ch, CURLOPT_POSTFIELDS, $postdata);
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+            curl_setopt($ch, CURLOPT_HTTPHEADER, ['Content-Type: application/json','Origin: https://manager.asqtest.ir']);
+
+            $result = curl_exec($ch);
+            curl_close($ch);
+            $listAPI1 = json_decode($result,true);
+            if($listAPI1['status']!=200){
+            }
+            echo $listAPI1['data'][0]['name'].' '.$listAPI1['data'][0]['lastName']
+
+
+
+            ?>
         </h2>
     </div>
 
@@ -216,53 +243,56 @@
                             <div class="grid grid-cols-12 gap-x-5">
 
 
-                                <div class="col-span-12 xl:col-span-9 mt-3">
+                                <div class="col-span-12 xl:col-span-3 mt-3">
                                     <div>
                                         <label for="dateBirthSh" class="form-label">نام <span class="text-theme-6">* </span>  </label>
                                         <div class="relative w-100 mx-auto">
-                                            <input type="text"  id="name"  class="form-control pr-12"/>
+                                            <input type="text"  id="name" value="<?php echo $listAPI1['data'][0]['name']?>" class="form-control pr-12"/>
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <div class="col-span-12 xl:col-span-3 mt-3">
+                                    <div>
+                                        <label for="dateBirthSh" class="form-label">نام خانوادگی <span class="text-theme-6">* </span>  </label>
+                                        <div class="relative w-100 mx-auto">
+                                            <input type="text"  id="lastName"  value="<?php echo $listAPI1['data'][0]['lastName']?>"  class="form-control pr-12"/>
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <div class="col-span-12 xl:col-span-3 mt-3">
+                                    <div>
+                                        <label for="dateBirthSh" class="form-label">شماره دانشجویی<span class="text-theme-6">* </span>  </label>
+                                        <div class="relative w-100 mx-auto">
+                                            <input type="text"  id="sNumber" value="<?php echo $listAPI1['data'][0]['sNumber']?>"  class="form-control pr-12"/>
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <div class="col-span-12 xl:col-span-3 mt-3">
+                                    <div>
+                                        <label for="dateBirthSh" class="form-label">شماره همراه<span class="text-theme-6">* </span>  </label>
+                                        <div class="relative w-100 mx-auto">
+                                            <input type="text"  id="phone" value="<?php echo $listAPI1['data'][0]['phone']?>" class="form-control pr-12"/>
                                         </div>
                                     </div>
 
                                 </div>
                                 <div class="col-span-12 xl:col-span-3 mt-3">
                                     <div class=" xxl:mt-0">
-                                        <label for="root" class="form-label">زیر ریشه<span class="text-theme-6">*</span></label>
-                                        <select id="root" data-search="true" class="form-control tail-select m-1 w-full">
-                                            <option value="0">ریشه اصلی</option>
-                                            <?php
-                                            $url = "https://omid.asqtest.ir/manager/rootCategory";
-                                            $data=array(
-                                                "token"=>$_SESSION['employeeId']
-                                            )
-                                            ;
-
-
-                                            $postdata = json_encode($data);
-
-                                            $ch = curl_init($url);
-                                            curl_setopt($ch, CURLOPT_POST, 1);
-                                            curl_setopt($ch, CURLOPT_POSTFIELDS, $postdata);
-                                            curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-                                            curl_setopt($ch, CURLOPT_HTTPHEADER, ['Content-Type: application/json','Origin: https://manager.asqtest.ir']);
-
-                                            $result = curl_exec($ch);
-                                            curl_close($ch);
-                                            $listAPI = json_decode($result,true);
-                                            if($listAPI['status']!=200){
-                                            }else{
-                                               foreach ($listAPI['data'] as $item){
-                                                   echo '<option value="'.$item['id'].'">'.$item['name'].'</option>';
-                                               }
-                                            }
-
-
-                                            ?>
+                                        <label for="grade" class="form-label">مقطع تحصیلی<span class="text-theme-6">*</span></label>
+                                        <select  id="grade" data-search="true" class="form-control tail-select m-1 w-full">
+                                            <option <?php if($listAPI1['data'][0]['grade']=='bachelor') echo 'selected'?> value="bachelor">لیسانس</option>
+                                            <option <?php if($listAPI1['data'][0]['grade']=='masters') echo 'selected'?>  value="masters">ارشد</option>
 
 
                                         </select>
                                     </div>
                                 </div>
+
+
+
 
 
 
@@ -298,7 +328,7 @@
                             </div>
 
 
-                            <button onclick="addCategory()"   type="button" class="btn   btn-primary w-20 mt-3"> ذخیره </button>
+                            <button onclick="editeUser(<?php echo $listAPI1['data'][0]['id']?>)"   type="button" class="btn   btn-primary w-20 mt-3"> ذخیره </button>
                         </div>
 
                     </div>
@@ -358,11 +388,13 @@
     var latLoadDetailId=0;
     let selectServises=[];
     let selectServises2=[];
-    async function addCategory(){
+    async function editeUser(id){
         $('#alert-danger').hide(500);
         let name=$('#name').val();
-
-        let root=$('#root :selected').val();
+        let lastName=$('#lastName').val();
+        let phone=fixNumbers($('#phone').val());
+        let sNumber=$('#sNumber').val();
+        let grade=$('#grade :selected').val();
 
 
 
@@ -370,6 +402,11 @@
         let error=[];
         if(name=='' && name.length<3){
             error.push("نام را به درستی وارد کنید.");
+        } if(lastName=='' && lastName.length<3){
+            error.push("نام خانوادگی را به درستی وارد کنید.");
+        }
+        if(phone=='' && phone.length<11){
+                    error.push("شماره را به درستی وارد کنید.");
         }
 
 
@@ -379,12 +416,16 @@
             let data = {
 
                 "name": name,
-                "root": root,
+                "id": id,
+                "lastName": lastName,
+                "phone": phone,
+                "sNumber": sNumber,
+                "grade": grade,
                 "token":"<?php echo $_SESSION['employeeId'] ?>"
 
             }
 
-            const response = await fetch('https://omid.asqtest.ir/manager/addCategory', {
+            const response = await fetch('https://omid.asqtest.ir/manager/editeUser', {
                 method: "POST",
                 body: JSON.stringify(data),
                 headers: {"Content-type": "application/json; charset=UTF-8"}
@@ -516,6 +557,20 @@
         })
     }
 
+    function getSelectValues(select) {
+        var result = [];
+        var options = select && select.options;
+        var opt;
+
+        for (var i=0, iLen=options.length; i<iLen; i++) {
+            opt = options[i];
+
+            if (opt.selected) {
+                result.push(opt.value || opt.text);
+            }
+        }
+        return result;
+    }
     function myFunctionSerch() {
         // Declare variables
         var input, filter, table, tr, td, i, txtValue;

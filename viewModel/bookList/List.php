@@ -1,7 +1,7 @@
 <?php
 include_once("../../functions/config.php");
 if(isset($_REQUEST['keyword']) and isset($_REQUEST['limit']) and isset($_REQUEST['page'])){
-    $url = "https://omid.asqtest.ir/manager/categoryList";
+    $url = "https://omid.asqtest.ir/manager/bookList";
     $data=array(
         "token"=>$_SESSION['employeeId'],
         "keyword"=>$_REQUEST['keyword'],
@@ -69,7 +69,8 @@ if(isset($_REQUEST['keyword']) and isset($_REQUEST['limit']) and isset($_REQUEST
                 <tr>
                     <th class="border-b-2 dark:border-dark-5 whitespace-nowrap">#</th>
                     <th class="border-b-2 dark:border-dark-5 whitespace-nowrap">نام</th>
-                    <th class="border-b-2 dark:border-dark-5 whitespace-nowrap">نام ریشه</th>
+                    <th class="border-b-2 dark:border-dark-5 whitespace-nowrap">نام دسته بندی</th>
+                    <th class="border-b-2 dark:border-dark-5 whitespace-nowrap">کمد/قفسه</th>
                    
           
                     <th class="border-b-2 dark:border-dark-5 whitespace-nowrap"> عملیات</th>
@@ -80,6 +81,14 @@ if(isset($_REQUEST['keyword']) and isset($_REQUEST['limit']) and isset($_REQUEST
 
     foreach ($datas as $data){
         $j++;
+        $btn='';
+        if($data['status']=='active'){
+            $btn='<button class="btn btn-danger-soft" onclick="deActive('.$data['id'].')">غیرفعال</button>          ';
+        }
+
+        if($data['status']=='notActive'){
+            $btn='<button class="btn btn-success-soft" onclick="Active('.$data['id'].')">فعال سازی</button>          ';
+        }
 
 
         echo '
@@ -87,29 +96,17 @@ if(isset($_REQUEST['keyword']) and isset($_REQUEST['limit']) and isset($_REQUEST
                     <td class="border-b whitespace-nowrap">'.$j.'</td>
                     <td class="border-b whitespace-nowrap">'.$data['name'].'  </td>
               
-                    <td class="border-b whitespace-nowrap">رشه اصلی</td>
+                    <td class="border-b whitespace-nowrap">'.$data['categoryName'].'</td>
+                    <td class="border-b whitespace-nowrap ">'.$data['comode'].'/'.$data['ghafase'].'</td>
                     <td class="border-b whitespace-nowrap">
-                    <a target="_blank" href="dashboard/editeCategory/'.$data['id'].'" class=" m-1 p-1  rounded-lg btn-warning">ویرایش</a>
-                    <button class="btn btn-danger-soft" onclick="deActive('.$data['id'].')">حذف</button>          
+                    <a target="_blank" href="dashboard/editeBook/'.$data['id'].'" class=" m-1 p-1  rounded-lg btn-warning">ویرایش</a>
+                    <a target="_blank" href="dashboard/historyBook/'.$data['id'].'" class=" m-1 p-1  rounded-lg btn-elevated-primary">سوابق امانت</a>
+                    
+                    '.$btn .'
                     </td>
                 
         </tr>
         ';
-        foreach ($data['subcategory'] as $subcategory ){
-            echo '
-         <tr>
-                    <td class="border-b whitespace-nowrap">'.$j.'</td>
-                    <td class="border-b whitespace-nowrap">'.$subcategory['name'].'  </td>
-              
-                    <td class="border-b whitespace-nowrap">'.$data['name'].' </td>
-                    <td class="border-b whitespace-nowrap">
-                    <a target="_blank" href="dashboard/editeCategory/'.$subcategory['id'].'" class=" m-1 p-1  rounded-lg btn-warning">ویرایش</a>
-                    <button class="btn btn-danger-soft" onclick="deActive('.$subcategory['id'].')">حذف</button>          
-                    </td>
-                
-        </tr>
-        ';
-        }
     }
 
 

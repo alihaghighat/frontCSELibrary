@@ -196,9 +196,35 @@
 
 </style>
 <div class="content">
+    <?php
+    $url = "https://omid.asqtest.ir/manager/categoryDetaile";
+    $data=array(
+        "token"=>$_SESSION['employeeId'],
+        "id"=>$_REQUEST['id']
+    )
+    ;
+
+
+    $postdata = json_encode($data);
+
+    $ch = curl_init($url);
+    curl_setopt($ch, CURLOPT_POST, 1);
+    curl_setopt($ch, CURLOPT_POSTFIELDS, $postdata);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+    curl_setopt($ch, CURLOPT_HTTPHEADER, ['Content-Type: application/json','Origin: https://manager.asqtest.ir']);
+
+    $result = curl_exec($ch);
+    curl_close($ch);
+    $listAPI1 = json_decode($result,true);
+    if($listAPI1['status']!=200){
+    }
+
+
+    ?>
+
     <div class="intro-y flex items-center mt-8">
         <h2 class="text-lg font-medium ml-auto">
-          افزودن دسته بندی
+          ویرایش دسته بندی
         </h2>
     </div>
 
@@ -220,7 +246,7 @@
                                     <div>
                                         <label for="dateBirthSh" class="form-label">نام <span class="text-theme-6">* </span>  </label>
                                         <div class="relative w-100 mx-auto">
-                                            <input type="text"  id="name"  class="form-control pr-12"/>
+                                            <input type="text"  id="name" value="<?php echo $listAPI1['data'][0]['name']?>"  class="form-control pr-12"/>
                                         </div>
                                     </div>
 
@@ -252,7 +278,12 @@
                                             if($listAPI['status']!=200){
                                             }else{
                                                foreach ($listAPI['data'] as $item){
-                                                   echo '<option value="'.$item['id'].'">'.$item['name'].'</option>';
+                                                   if($listAPI1['data'][0]['id']==$item['id']){
+                                                       echo '<option selected value="'.$item['id'].'">'.$item['name'].'</option>';
+                                                   }else{
+                                                       echo '<option value="'.$item['id'].'">'.$item['name'].'</option>';
+                                                   }
+
                                                }
                                             }
 
@@ -298,7 +329,7 @@
                             </div>
 
 
-                            <button onclick="addCategory()"   type="button" class="btn   btn-primary w-20 mt-3"> ذخیره </button>
+                            <button onclick="editeCategory(<?php echo $listAPI1['data'][0]['id']?>)"   type="button" class="btn   btn-primary w-20 mt-3"> ذخیره </button>
                         </div>
 
                     </div>
@@ -358,7 +389,7 @@
     var latLoadDetailId=0;
     let selectServises=[];
     let selectServises2=[];
-    async function addCategory(){
+    async function editeCategory(id){
         $('#alert-danger').hide(500);
         let name=$('#name').val();
 
@@ -380,11 +411,12 @@
 
                 "name": name,
                 "root": root,
-                "token":"<?php echo $_SESSION['employeeId'] ?>"
+                "token":"<?php echo $_SESSION['employeeId'] ?>",
+                "id":id
 
             }
 
-            const response = await fetch('https://omid.asqtest.ir/manager/addCategory', {
+            const response = await fetch('https://omid.asqtest.ir/manager/editeCategory', {
                 method: "POST",
                 body: JSON.stringify(data),
                 headers: {"Content-type": "application/json; charset=UTF-8"}
@@ -560,7 +592,7 @@
 
         return [jy, jm, jd];
     }
-    function showEditBime(id){
+          function showEditBime(id){
         $('#header-footer-modal-preview').show(400);
         $.ajax({
             url : 'viewModel/ASQ3/testList.php',

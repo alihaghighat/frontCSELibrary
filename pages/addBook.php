@@ -198,7 +198,7 @@
 <div class="content">
     <div class="intro-y flex items-center mt-8">
         <h2 class="text-lg font-medium ml-auto">
-          افزودن دسته بندی
+          افزودن کتاب
         </h2>
     </div>
 
@@ -216,7 +216,7 @@
                             <div class="grid grid-cols-12 gap-x-5">
 
 
-                                <div class="col-span-12 xl:col-span-9 mt-3">
+                                <div class="col-span-12 xl:col-span-3 mt-3">
                                     <div>
                                         <label for="dateBirthSh" class="form-label">نام <span class="text-theme-6">* </span>  </label>
                                         <div class="relative w-100 mx-auto">
@@ -227,13 +227,15 @@
                                 </div>
                                 <div class="col-span-12 xl:col-span-3 mt-3">
                                     <div class=" xxl:mt-0">
-                                        <label for="root" class="form-label">زیر ریشه<span class="text-theme-6">*</span></label>
-                                        <select id="root" data-search="true" class="form-control tail-select m-1 w-full">
-                                            <option value="0">ریشه اصلی</option>
+                                        <label for="category" class="form-label">دسته بندی<span class="text-theme-6">*</span></label>
+                                        <select  id="category" data-search="true" class="form-control tail-select m-1 w-full">
                                             <?php
-                                            $url = "https://omid.asqtest.ir/manager/rootCategory";
+                                            $url = "https://omid.asqtest.ir/manager/categoryList";
                                             $data=array(
-                                                "token"=>$_SESSION['employeeId']
+                                                "token"=>$_SESSION['employeeId'],
+                                                "limit"=>10000,
+                                                "page"=>1,
+                                                "keyword"=>""
                                             )
                                             ;
 
@@ -253,11 +255,41 @@
                                             }else{
                                                foreach ($listAPI['data'] as $item){
                                                    echo '<option value="'.$item['id'].'">'.$item['name'].'</option>';
+                                                   foreach ($item['subcategory'] as $subcategory){
+                                                       echo '<option value="'.$subcategory['id'].'">--'.$subcategory['name'].'</option>';
+                                                   }
                                                }
                                             }
 
 
                                             ?>
+
+
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-span-12 xl:col-span-3 mt-3">
+                                    <div class=" xxl:mt-0">
+                                        <label for="comod" class="form-label">کمد<span class="text-theme-6">*</span></label>
+                                        <select  id="comod" data-search="true" class="form-control tail-select m-1 w-full">
+                                            <option >1</option>
+                                            <option >2</option>
+                                            <option >3</option>
+                                            <option >4</option>
+                                            <option >5</option>
+                                            <option >6</option>
+
+
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="col-span-12 xl:col-span-3 mt-3">
+                                    <div class=" xxl:mt-0">
+                                        <label for="ghafase" class="form-label">قفسه<span class="text-theme-6">*</span></label>
+                                        <select  id="ghafase" data-search="true" class="form-control tail-select m-1 w-full">
+                                            <option >A</option>
+                                            <option >B</option>
 
 
                                         </select>
@@ -298,7 +330,7 @@
                             </div>
 
 
-                            <button onclick="addCategory()"   type="button" class="btn   btn-primary w-20 mt-3"> ذخیره </button>
+                            <button onclick="addBook()"   type="button" class="btn   btn-primary w-20 mt-3"> ذخیره </button>
                         </div>
 
                     </div>
@@ -358,12 +390,13 @@
     var latLoadDetailId=0;
     let selectServises=[];
     let selectServises2=[];
-    async function addCategory(){
+    async function addBook(){
         $('#alert-danger').hide(500);
         let name=$('#name').val();
 
-        let root=$('#root :selected').val();
-
+        let category=$('#category :selected').val();
+        let comod=$('#comod :selected').val();
+        let ghafase=$('#ghafase :selected').val();
 
 
 
@@ -379,12 +412,14 @@
             let data = {
 
                 "name": name,
-                "root": root,
+                "category": category,
+                "comod": comod,
+                "ghafase": ghafase,
                 "token":"<?php echo $_SESSION['employeeId'] ?>"
 
             }
 
-            const response = await fetch('https://omid.asqtest.ir/manager/addCategory', {
+            const response = await fetch('https://omid.asqtest.ir/manager/addBook', {
                 method: "POST",
                 body: JSON.stringify(data),
                 headers: {"Content-type": "application/json; charset=UTF-8"}
@@ -516,6 +551,20 @@
         })
     }
 
+    function getSelectValues(select) {
+        var result = [];
+        var options = select && select.options;
+        var opt;
+
+        for (var i=0, iLen=options.length; i<iLen; i++) {
+            opt = options[i];
+
+            if (opt.selected) {
+                result.push(opt.value || opt.text);
+            }
+        }
+        return result;
+    }
     function myFunctionSerch() {
         // Declare variables
         var input, filter, table, tr, td, i, txtValue;

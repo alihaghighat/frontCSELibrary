@@ -4,19 +4,19 @@
 
     <div class="intro-y flex items-center mt-8">
         <h2 class="text-lg font-medium ml-auto">
-            لیست دسته بندی
+            لیست کاربران
         </h2>
     </div>
     <div class="grid grid-cols-12 gap-6 mt-5" >
 
         <div class="intro-y col-span-12 flex flex-wrap sm:flex-nowrap items-center mt-2">
-            <a onclick="categoryList()" class="btn  shadow-md ml-2" ><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather feather-refresh-ccw block mx-auto ml-1"><polyline points="1 4 1 10 7 10"></polyline><polyline points="23 20 23 14 17 14"></polyline><path d="M20.49 9A9 9 0 0 0 5.64 5.64L1 10m22 4l-4.64 4.36A9 9 0 0 1 3.51 15"></path></svg>بروزرسانی</a>
+            <a onclick="userList()" class="btn  shadow-md ml-2" ><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather feather-refresh-ccw block mx-auto ml-1"><polyline points="1 4 1 10 7 10"></polyline><polyline points="23 20 23 14 17 14"></polyline><path d="M20.49 9A9 9 0 0 0 5.64 5.64L1 10m22 4l-4.64 4.36A9 9 0 0 1 3.51 15"></path></svg>بروزرسانی</a>
             <div class="hidden md:block mx-auto text-gray-600" id="countListTrucks">نمایش 1 تا 10 از 150 داده</div>
 
             <div class="w-full sm:w-auto mt-3 ml-1 sm:mt-0 sm:ml-auto md:ml-0" style="">
                 <div class="w-56 relative text-gray-700 dark:text-gray-300">
-                    <input type="text" id="search-data-table-listLoad" onkeyup="categoryList()" class="form-control w-56 box pl-10 placeholder-theme-13" placeholder="جستجو...">
-                    <i class="w-4 h-4 absolute my-auto inset-y-0 ml-3 left-0" data-feather="search" onclick="categoryList()"></i>
+                    <input type="text" id="search-data-table-listLoad" onkeyup="userList()" class="form-control w-56 box pl-10 placeholder-theme-13" placeholder="جستجو...">
+                    <i class="w-4 h-4 absolute my-auto inset-y-0 ml-3 left-0" data-feather="search" onclick="userList()"></i>
                 </div>
             </div>
 
@@ -82,7 +82,7 @@
 
 
             </ul>
-            <select class="w-20 form-select box mt-3 sm:mt-0" onchange="categoryList()" id="limitPage">
+            <select class="w-20 form-select box mt-3 sm:mt-0" onchange="userList()" id="limitPage">
                 <option >20</option>
                 <option>50</option>
                 <option>35</option>
@@ -114,7 +114,7 @@
                 "token": "<?php echo $_SESSION['employeeId'] ?>"
 
             }
-            const response = await fetch('https://omid.asqtest.ir/manager/deactiveCategory', {
+            const response = await fetch('https://omid.asqtest.ir/manager/deactiveUser', {
                 method: "POST",
                 body: JSON.stringify(dataSend),
                 headers: {"Content-type": "application/json"}
@@ -130,7 +130,7 @@
                     $("#toast-close").click();
 
                     setTimeout(function () {
-                        categoryList()
+                        userList()
                         $("#toast-close").click();
                     }, 5000);
 
@@ -171,20 +171,18 @@
         }
 
     }
-    async function activeTion(id) {
+    async function Active(id) {
 
 
         let error=[];
 
         if(error.length==0){
             let dataSend = {
-                "type":'activeTest',
                 "id":id,
-
                 "token": "<?php echo $_SESSION['employeeId'] ?>"
 
             }
-            const response = await fetch('https://api.asqtest.ir/manager/setDoctorActive', {
+            const response = await fetch('https://omid.asqtest.ir/manager/activeUser', {
                 method: "POST",
                 body: JSON.stringify(dataSend),
                 headers: {"Content-type": "application/json"}
@@ -200,7 +198,7 @@
                     $("#toast-close").click();
 
                     setTimeout(function () {
-                        categoryList()
+                        userList()
                         $("#toast-close").click();
                     }, 5000);
 
@@ -278,7 +276,7 @@
     var latLoadDetailId=0;
     let selectServises=[];
     let selectServises2=[];
-    function categoryList(){
+    function userList(){
         let keyword=$('#search-data-table-listLoad').val();
         let limit=$('#limitPage :selected').val();
 
@@ -286,7 +284,7 @@
         count();
         pagetion();
         $.ajax({
-            url : 'viewModel/categoryList/List.php',
+            url : 'viewModel/userList/List.php',
             type : 'POST',
             data : {
                 "keyword":keyword,
@@ -304,21 +302,14 @@
     }
     function setPage(pageInput){
         page=pageInput;
-        categoryList();
+        userList();
     }
-    function  listLoadShowSearch(e){
-        if(e.keyCode==13){
-            var keyword=$('#search-data-table-listLoad').val();
-            $("#myTable tr").filter(function() {
-                $(this).toggle($(this).text().toLowerCase().indexOf(keyword) > -1)
-            });
-        }
-    }
+
     function count(){
         let keyword=$('#search-data-table-listLoad').val();
         let limit=$('#limitPage :selected').val();
         $.ajax({
-            url : 'viewModel/categoryList/List.php',
+            url : 'viewModel/userList/List.php',
             type : 'POST',
             data : {
                 "keyword":keyword,
@@ -339,7 +330,7 @@
         let keyword=$('#search-data-table-listLoad').val();
         let limit=$('#limitPage :selected').val();
         $.ajax({
-            url : 'viewModel/categoryList/List.php',
+            url : 'viewModel/userList/List.php',
             type : 'POST',
             data : {
                 "keyword":keyword,
@@ -405,7 +396,7 @@
     function showEditBime(id){
         $('#header-footer-modal-preview').show(400);
         $.ajax({
-            url : 'viewModel/categoryList/List.php',
+            url : 'viewModel/userList/List.php',
             type : 'POST',
             data : {
                 "id":id

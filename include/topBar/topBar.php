@@ -9,7 +9,13 @@
         <!-- BEGIN: Breadcrumb -->
         <?php
         $url = "https://omid.asqtest.ir/manager/pageDetaile/$page";
-
+        if($page=='editeCategory'){
+            $url = "https://omid.asqtest.ir/manager/pageDetaile/categoryList";
+        } if($page=='editeBook'){
+            $url = "https://omid.asqtest.ir/manager/pageDetaile/bookList";
+        } if($page=='editeUser'){
+            $url = "https://omid.asqtest.ir/manager/pageDetaile/userList";
+        }
 
         $client = curl_init($url);
         curl_setopt($client,CURLOPT_RETURNTRANSFER,true);

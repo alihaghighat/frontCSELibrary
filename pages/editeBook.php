@@ -198,7 +198,34 @@
 <div class="content">
     <div class="intro-y flex items-center mt-8">
         <h2 class="text-lg font-medium ml-auto">
-          افزودن دسته بندی
+          ویرایش کتاب
+            <?php
+            $url = "https://omid.asqtest.ir/manager/bookDetaile";
+            $data=array(
+                "token"=>$_SESSION['employeeId'],
+                "id"=>$_REQUEST['id']
+            )
+            ;
+
+
+            $postdata = json_encode($data);
+
+            $ch = curl_init($url);
+            curl_setopt($ch, CURLOPT_POST, 1);
+            curl_setopt($ch, CURLOPT_POSTFIELDS, $postdata);
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+            curl_setopt($ch, CURLOPT_HTTPHEADER, ['Content-Type: application/json','Origin: https://manager.asqtest.ir']);
+
+            $result = curl_exec($ch);
+            curl_close($ch);
+            $listAPI1 = json_decode($result,true);
+            if($listAPI1['status']!=200){
+            }
+            echo $listAPI1['data'][0]['name']
+
+
+
+            ?>
         </h2>
     </div>
 
@@ -216,24 +243,26 @@
                             <div class="grid grid-cols-12 gap-x-5">
 
 
-                                <div class="col-span-12 xl:col-span-9 mt-3">
+                                <div class="col-span-12 xl:col-span-3 mt-3">
                                     <div>
                                         <label for="dateBirthSh" class="form-label">نام <span class="text-theme-6">* </span>  </label>
                                         <div class="relative w-100 mx-auto">
-                                            <input type="text"  id="name"  class="form-control pr-12"/>
+                                            <input type="text"  id="name"   value="<?php echo $listAPI1['data'][0]['name']?>" class="form-control pr-12"/>
                                         </div>
                                     </div>
 
                                 </div>
                                 <div class="col-span-12 xl:col-span-3 mt-3">
                                     <div class=" xxl:mt-0">
-                                        <label for="root" class="form-label">زیر ریشه<span class="text-theme-6">*</span></label>
-                                        <select id="root" data-search="true" class="form-control tail-select m-1 w-full">
-                                            <option value="0">ریشه اصلی</option>
+                                        <label for="category" class="form-label">دسته بندی<span class="text-theme-6">*</span></label>
+                                        <select  id="category" data-search="true" class="form-control tail-select m-1 w-full">
                                             <?php
-                                            $url = "https://omid.asqtest.ir/manager/rootCategory";
+                                            $url = "https://omid.asqtest.ir/manager/categoryList";
                                             $data=array(
-                                                "token"=>$_SESSION['employeeId']
+                                                "token"=>$_SESSION['employeeId'],
+                                                "limit"=>10000,
+                                                "page"=>1,
+                                                "keyword"=>""
                                             )
                                             ;
 
@@ -252,12 +281,51 @@
                                             if($listAPI['status']!=200){
                                             }else{
                                                foreach ($listAPI['data'] as $item){
-                                                   echo '<option value="'.$item['id'].'">'.$item['name'].'</option>';
+                                                   if($listAPI1['data'][0]['category']==$item['id']){
+                                                       echo '<option selected value="'.$item['id'].'">'.$item['name'].'</option>';
+                                                   }else{
+                                                       echo '<option value="'.$item['id'].'">'.$item['name'].'</option>';
+                                                   }
+                                                   foreach ($item['subcategory'] as $subcategory){
+                                                       if($listAPI1['data'][0]['category']==$subcategory['id']){
+                                                           echo '<option selected value="'.$subcategory['id'].'">--'.$subcategory['name'].'</option>';
+                                                       }else{
+                                                           echo '<option value="'.$subcategory['id'].'">--'.$subcategory['name'].'</option>';
+                                                       }
+
+                                                   }
                                                }
                                             }
 
 
                                             ?>
+
+
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-span-12 xl:col-span-3 mt-3">
+                                    <div class=" xxl:mt-0">
+                                        <label for="comod" class="form-label">کمد<span class="text-theme-6">*</span></label>
+                                        <select  id="comod" data-search="true" class="form-control tail-select m-1 w-full">
+                                            <option <?php if($listAPI1['data'][0]['comode']==1) echo 'selected'?> >1</option>
+                                            <option <?php if($listAPI1['data'][0]['comode']==2) echo 'selected'?>>2</option>
+                                            <option <?php if($listAPI1['data'][0]['comode']==3) echo 'selected'?>>3</option>
+                                            <option <?php if($listAPI1['data'][0]['comode']==4) echo 'selected'?>>4</option>
+                                            <option <?php if($listAPI1['data'][0]['comode']==5) echo 'selected'?>>5</option>
+                                            <option <?php if($listAPI1['data'][0]['comode']==6) echo 'selected'?>>6</option>
+
+
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="col-span-12 xl:col-span-3 mt-3">
+                                    <div class=" xxl:mt-0">
+                                        <label for="ghafase" class="form-label">قفسه<span class="text-theme-6">*</span></label>
+                                        <select  id="ghafase" data-search="true" class="form-control tail-select m-1 w-full">
+                                            <option <?php if($listAPI1['data'][0]['ghafase']=='A') echo 'selected'?> >A</option>
+                                            <option <?php if($listAPI1['data'][0]['ghafase']=='B') echo 'selected'?>>B</option>
 
 
                                         </select>
@@ -298,7 +366,7 @@
                             </div>
 
 
-                            <button onclick="addCategory()"   type="button" class="btn   btn-primary w-20 mt-3"> ذخیره </button>
+                            <button onclick="editeBook(<?php echo $listAPI1['data'][0]['id']?>)"   type="button" class="btn   btn-primary w-20 mt-3"> ذخیره </button>
                         </div>
 
                     </div>
@@ -358,12 +426,13 @@
     var latLoadDetailId=0;
     let selectServises=[];
     let selectServises2=[];
-    async function addCategory(){
+    async function editeBook(id){
         $('#alert-danger').hide(500);
         let name=$('#name').val();
 
-        let root=$('#root :selected').val();
-
+        let category=$('#category :selected').val();
+        let comod=$('#comod :selected').val();
+        let ghafase=$('#ghafase :selected').val();
 
 
 
@@ -378,13 +447,16 @@
 
             let data = {
 
+                "id": id,
                 "name": name,
-                "root": root,
+                "category": category,
+                "comod": comod,
+                "ghafase": ghafase,
                 "token":"<?php echo $_SESSION['employeeId'] ?>"
 
             }
 
-            const response = await fetch('https://omid.asqtest.ir/manager/addCategory', {
+            const response = await fetch('https://omid.asqtest.ir/manager/editeBook', {
                 method: "POST",
                 body: JSON.stringify(data),
                 headers: {"Content-type": "application/json; charset=UTF-8"}
@@ -516,6 +588,20 @@
         })
     }
 
+    function getSelectValues(select) {
+        var result = [];
+        var options = select && select.options;
+        var opt;
+
+        for (var i=0, iLen=options.length; i<iLen; i++) {
+            opt = options[i];
+
+            if (opt.selected) {
+                result.push(opt.value || opt.text);
+            }
+        }
+        return result;
+    }
     function myFunctionSerch() {
         // Declare variables
         var input, filter, table, tr, td, i, txtValue;
