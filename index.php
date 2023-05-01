@@ -14,21 +14,21 @@
     <meta charset="utf-8">
 
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="سامانه مدیریت asq | جهت مدیریت کلیکن های پزشکی">
+
     <meta name="keywords" content="مدیریت کتابخانه بخش کامپیوتر دانشگاه شیراز ">
     <meta name="author" content="گروه برنامه نویسی بام ++ ">
     <title> مدیریت کتابخانه بخش کامپیوتر دانشگاه شیراز  | cselibrary -</title>
-    <!-- BEGIN: CSS Assets-->
+    <!-- BEGIN: CSS Assets--> 
     <link rel="stylesheet" type="text/css" href="assestPanel/dist/css/app.css" />
     <!-- END: CSS Assets-->
 </head>
-<!-- END: Head -->
+<!-- END: Head --> 
 <body class="main">
 <div class="container">
     <!-- BEGIN: Error Page -->
     <div class="error-page flex flex-col lg:flex-row items-center justify-center h-screen text-center lg:text-right">
         <div class="-intro-x lg:ml-20">
-            <img alt="وب اپلیکیشن مدیریت مدیریت asq -مدیریت asq" class=" lg:h-auto" src="assestPanel/dist/images/Logo.png">
+            <img alt="وب اپلیکیشن مدیریت مدیریت کتابخانه بخش کامپیوتر دانشگاه شیراز -مدیریت کتابخانه بخش کامپیوتر دانشگاه شیراز" class=" lg:h-auto" src="assestPanel/dist/images/Logo.png">
         </div>
         <div class="text-white mt-10 lg:mt-0">
             <div class="intro-x text-5xl font-medium">پنل کاربری کاربران</div>

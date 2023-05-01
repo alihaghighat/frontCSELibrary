@@ -198,12 +198,12 @@ if(is_file($file)){
     },2500) 
             ";
 
-        }if($page=='listOfDoctor'){
+        }if($page=='historyBook'){
             echo "
-            doctorList();
+            historyBookList();
            
            setTimeout(function () {
-        doctorList();
+        historyBookList();
  
     },2500) 
             ";

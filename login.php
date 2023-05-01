@@ -12,7 +12,7 @@ if(isset($_SESSION['employeeId']) ){
     <meta charset="utf-8">
  
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="سامانه مدیریت asq | جهت مدیریت کلیکن های پزشکی">
+   
     <meta name="keywords" content="مدیریت کتابخانه بخش کامپیوتر دانشگاه شیراز ">
     <meta name="author" content="گروه برنامه نویسی بام ++ ">
     <title> مدیریت کتابخانه بخش کامپیوتر دانشگاه شیراز  | cselibrary </title>
@@ -28,11 +28,11 @@ if(isset($_SESSION['employeeId']) ){
         <!-- BEGIN: Login Info -->
         <div class="hidden xl:flex flex-col min-h-screen">
             <a href="" class="-intro-x flex items-center pt-5">
-                <img alt="وب اپلیکیشن مدیریت مدیریت asq -مدیریت asq" class="w-20" src="assestPanel/dist/images/Logo.png">
-                <span class="text-white text-lg mr-3"><span class="font-medium">مدیریت asq</span> </span>
+                <img alt="وب اپلیکیشن مدیریت مدیریت کتابخانه بخش کامپیوتر دانشگاه شیراز -مدیریت کتابخانه بخش کامپیوتر دانشگاه شیراز" class="w-20" src="assestPanel/dist/images/Logo.png">
+                <span class="text-white text-lg mr-3"><span class="font-medium">مدیریت کتابخانه بخش کامپیوتر دانشگاه شیراز</span> </span>
             </a>
             <div class="my-auto">
-                <img alt="وب اپلیکیشن مدیریت مدیریت asq -مدیریت asq" class="-intro-x w-1/2 -mt-16" src="assestPanel/dist/images/illustration.svg">
+                <img alt="وب اپلیکیشن مدیریت مدیریت کتابخانه بخش کامپیوتر دانشگاه شیراز -مدیریت کتابخانه بخش کامپیوتر دانشگاه شیراز" class="-intro-x w-1/2 -mt-16" src="assestPanel/dist/images/illustration.svg">
                 <div class="-intro-x text-white font-medium text-4xl leading-tight mt-10">
                     این پنل مخصوص کاربران  می باشد
                 </div>
@@ -46,7 +46,7 @@ if(isset($_SESSION['employeeId']) ){
                 <h2 class="intro-x font-bold text-2xl xl:text-3xl text-center xl:text-right">
                     ورود
                 </h2>
-                <div class="intro-x mt-2 text-gray-800 xl:hidden text-center">مدیریت asq - پنل مدیریت </div>
+                <div class="intro-x mt-2 text-gray-800 xl:hidden text-center">مدیریت کتابخانه بخش کامپیوتر دانشگاه شیراز - پنل مدیریت </div>
 
                 <!-- BEGIN: Basic Select -->
 

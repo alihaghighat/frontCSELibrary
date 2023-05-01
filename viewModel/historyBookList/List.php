@@ -1,9 +1,10 @@
 <?php
 include_once("../../functions/config.php");
 if(isset($_REQUEST['keyword']) and isset($_REQUEST['limit']) and isset($_REQUEST['page'])){
-    $url = "https://omid.asqtest.ir/manager/userList";
+    $url = "https://omid.asqtest.ir/manager/historyBook";
     $data=array(
         "token"=>$_SESSION['employeeId'],
+        "id"=>$_REQUEST['id'],
         "keyword"=>$_REQUEST['keyword'],
         "limit"=>$_REQUEST['limit'],
         "page"=>$_REQUEST['page'],
@@ -68,11 +69,11 @@ if(isset($_REQUEST['keyword']) and isset($_REQUEST['limit']) and isset($_REQUEST
     echo '<thead>
                 <tr>
                     <th class="border-b-2 dark:border-dark-5 whitespace-nowrap">#</th>
-                    <th class="border-b-2 dark:border-dark-5 whitespace-nowrap">نام و نام خانوادگی</th>
-                    <th class="border-b-2 dark:border-dark-5 whitespace-nowrap">شماره دانشجویی</th>
-                    <th class="border-b-2 dark:border-dark-5 whitespace-nowrap">شماره همراه</th>
-                    <th class="border-b-2 dark:border-dark-5 whitespace-nowrap">مقطع تحصیلی</th>
+                    <th class="border-b-2 dark:border-dark-5 whitespace-nowrap">کاربر</th>
+                    <th class="border-b-2 dark:border-dark-5 whitespace-nowrap">تاریخ تحویل</th>
+                    <th class="border-b-2 dark:border-dark-5 whitespace-nowrap">روز باقی مونده</th>
                     <th class="border-b-2 dark:border-dark-5 whitespace-nowrap">وضعیت</th>
+                    <th class="border-b-2 dark:border-dark-5 whitespace-nowrap">توضیحات</th>
                    
           
                     <th class="border-b-2 dark:border-dark-5 whitespace-nowrap"> عملیات</th>
@@ -84,28 +85,23 @@ if(isset($_REQUEST['keyword']) and isset($_REQUEST['limit']) and isset($_REQUEST
     foreach ($datas as $data){
         $j++;
         $btn='';
+        $status='پس گرفته شده';
         if($data['status']=='active'){
-            $btn='<button class="btn btn-danger-soft" onclick="deActive('.$data['id'].')">غیرفعال</button>          ';
-            $status='فعال';
-        }
-
-        if($data['status']=='notActive'){
-            $btn='<button class="btn btn-success-soft" onclick="Active('.$data['id'].')">فعال سازی</button>          ';
-            $status='غیر فعال';
+            $btn='<a data-toggle="modal" data-target="#header-footer-modal-preview"  class="btn btn-danger-soft" onclick="showReturn('.$data['id'].')">پس گرفتن</button>          ';
+            $status='در امانت';
         }
 
 
         echo '
          <tr>
                     <td class="border-b whitespace-nowrap">'.$j.'</td>
-                    <td class="border-b whitespace-nowrap">'.$data['name'].'  '.$data['lastName'].' </td>
+                    <td class="border-b whitespace-nowrap">'.$data['user'].'  </td>
               
-                    <td class="border-b whitespace-nowrap">'.$data['sNumber'].'</td>
-                    <td class="border-b whitespace-nowrap ">'.$data['phone'].' </td>
-                    <td class="border-b whitespace-nowrap ">'.$data['grade'].' </td>
-                    <td class="border-b whitespace-nowrap ">'.$status.' </td>
+                    <td class="border-b whitespace-nowrap">'.$data['startDateFa'].'</td>
+                    <td class="border-b whitespace-nowrap ">'.$data['diffDays'].'</td>
+                    <td class="border-b whitespace-nowrap ">'.$status.'</td>
+                    <td class="border-b whitespace-nowrap ">'.$data['descreptions'].'</td>
                     <td class="border-b whitespace-nowrap">
-                    <a target="_blank" href="dashboard/editeUser/'.$data['id'].'" class=" m-1 p-1  rounded-lg btn-warning">ویرایش</a>
                     
                     '.$btn .'
                     </td>

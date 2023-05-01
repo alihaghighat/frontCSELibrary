@@ -2,8 +2,8 @@
     <div class="top-bar-boxed flex items-center">
         <!-- BEGIN: Logo -->
         <a href="" class="-intro-x hidden md:flex">
-            <img alt="ب اپلیکیشن مدیریت مدیریت asq -مدیریت asq" class="w-10" src="assestPanel/dist/images/Logo.png">
-            <span class="text-white text-lg mr-3"><span class="font-medium">مدیریت asq</span> </span>
+            <img alt="ب اپلیکیشن مدیریت مدیریت کتابخانه بخش کامپیوتر دانشگاه شیراز -مدیریت کتابخانه بخش کامپیوتر دانشگاه شیراز" class="w-10" src="assestPanel/dist/images/Logo.png">
+            <span class="text-white text-lg mr-3"><span class="font-medium">مدیریت کتابخانه بخش کامپیوتر دانشگاه شیراز</span> </span>
         </a>
         <!-- END: Logo -->
         <!-- BEGIN: Breadcrumb -->
@@ -15,6 +15,8 @@
             $url = "https://omid.asqtest.ir/manager/pageDetaile/bookList";
         } if($page=='editeUser'){
             $url = "https://omid.asqtest.ir/manager/pageDetaile/userList";
+        }if($page=='historyBook'){
+            $url = "https://omid.asqtest.ir/manager/pageDetaile/bookList";
         }
 
         $client = curl_init($url);
@@ -43,7 +45,7 @@
             </av>
         </div>
         <!-- END: Search -->
-        <div class="intro-x dropdown bg-white ml-3 p-1 rounded-lg sm:ml-1" id="chat-new-massage" onclick="showeChatModel()" style="display: none">
+        <div class="intro-x dropdown bg-white ml-3 p-1 rounded-lg sm:ml-1" id="chat-new-massage"  style="display: none">
             <div class=" text-theme-6"  aria-expanded="false"> <p>پیام جدید دارید!</p> </div>
         </div>
         <!-- BEGIN: Notifications -->
@@ -60,27 +62,14 @@
             <div class="dropdown-menu w-56">
                 <div class="dropdown-menu__content box bg-theme-26 dark:bg-dark-6 text-white">
                     <div class="p-4 border-b border-theme-27 dark:border-dark-3">
-                        <?php
-                        $url = "https://api.asqtest.ir/manager/checkDetaileManager/".$_SESSION['employeeId'];
-                        $client = curl_init($url);
-                        curl_setopt($client,CURLOPT_RETURNTRANSFER,true);
-                        curl_setopt($client, CURLOPT_HTTPHEADER,  ['Origin: https://manager.asqtest.ir']);
-                        $response = curl_exec($client);
-                        $carrierDetail = json_decode($response,true);
-                        if($carrierDetail['status']=="200"){
-                            $carrierDetail=$carrierDetail['data'];
-                        }
 
 
 
-                        ?>
-
-                        <div class="font-medium"><?php echo $carrierDetail['name'].' '.$carrierDetail['lastName']?></div>
-                        <div class="text-xs text-theme-28 mt-0.5 dark:text-gray-600"><?php echo $carrierDetail['taskName']?></div>
+                        <div class="font-medium">امید عسلی</div>
+                        <div class="text-xs text-theme-28 mt-0.5 dark:text-gray-600">مدیر کل</div>
                     </div>
                     <div class="p-2">
-                        <a href="dashboard/profile" class="flex items-center block p-2 transition duration-300 ease-in-out hover:bg-theme-1 dark:hover:bg-dark-3 rounded-md"> <i data-feather="user" class="w-4 h-4 ml-2"></i> پروفایل </a>
-                        <a href="https://sabas-co.ir/" target="_blank" class="flex items-center block p-2 transition duration-300 ease-in-out hover:bg-theme-1 dark:hover:bg-dark-3 rounded-md"> <i data-feather="help-circle" class="w-4 h-4 ml-2"></i>سایت اصلی</a>
+                        <a href="https://cselibrary.ir/" target="_blank" class="flex items-center block p-2 transition duration-300 ease-in-out hover:bg-theme-1 dark:hover:bg-dark-3 rounded-md"> <i data-feather="help-circle" class="w-4 h-4 ml-2"></i>سایت اصلی</a>
                     </div>
                     <div class="p-2 border-t border-theme-27 dark:border-dark-3">
                         <div id="success-notification-toggle"></div>

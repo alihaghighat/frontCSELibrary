@@ -3,5 +3,6 @@ RewriteRule ^dashboard/([0-9a-zA-Z_-]*)$ dashboard.php?page=$1 [NC,L]
 RewriteRule ^dashboard/editeCategory/([0-9a-zA-Z_-]*)$ dashboard.php?page=editeCategory&id=$1 [NC,L]
 RewriteRule ^dashboard/editeBook/([0-9a-zA-Z_-]*)$ dashboard.php?page=editeBook&id=$1 [NC,L]
 RewriteRule ^dashboard/editeUser/([0-9a-zA-Z_-]*)$ dashboard.php?page=editeUser&id=$1 [NC,L]
+RewriteRule ^dashboard/historyBook/([0-9a-zA-Z_-]*)$ dashboard.php?page=historyBook&id=$1 [NC,L]
 
 RewriteRule ^([^\.]+)$ $1.php [NC,L]
